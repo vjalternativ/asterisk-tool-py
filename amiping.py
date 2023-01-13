@@ -3,7 +3,7 @@ from asterisk.ami import SimpleAction
 import time
 
 
-client = AMIClient("localhost", "5038")
+client = AMIClient("localhost", 5038)
 client.login("ameyodebug", "dacx")
 
 
