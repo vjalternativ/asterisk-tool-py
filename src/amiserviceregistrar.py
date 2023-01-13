@@ -1,10 +1,10 @@
 from src import amiservice
-keyvsclient = {}
+keyvsservice = {}
 class AMIServiceRegistrar():
 
     @staticmethod
     def registerami(key,address,port,username,secret):
-        client = amiservice.AMIService(address,port,username,secret)
-        client.login(username,secret)
-        keyvsclient[key] = client
-        return client
+        service = amiservice.AMIService(address,port,username,secret)
+        service.login(username,secret)
+        keyvsservice[key] = service
+        return service
