@@ -12,6 +12,6 @@ class AMIService(AMIClient):
         for x in range(num):
             callerid = f"{calleridprefix}num" 
             action = SimpleAction('Originate',Channel=f'SIP/{channel}',Exten=exten,Priority=1,Context=context,CallerID=callerid,Async='true')
-            self.amiclient.send_action(action)
+            self.send_action(action)
             str = f"{ctx} originated leg for callerid {callerid}"
             print(str)
