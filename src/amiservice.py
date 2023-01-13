@@ -4,7 +4,7 @@ class AMIService(AMIClient):
     
     def __init__(self, address, port,username,secret):
         super().__init__(address, port)
-        super().login(username, secret)
+        self.login(username, secret)
 
 
     def generateload(self,ctx, num, channel,exten,context,calleridprefix):
