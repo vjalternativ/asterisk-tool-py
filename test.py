@@ -6,7 +6,5 @@ thread1 = loadgenerator.Thread("amithread",1 ,client)
 
 
 thread1.start()
-thread2.start()
-
 
 
