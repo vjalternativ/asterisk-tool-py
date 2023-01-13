@@ -4,12 +4,19 @@ import time
 
 
 client = AMIClient("localhost", 5038)
+
+def event_listener(event,**kwargs):
+    print(event)
+
+client.add_event_listener(event_listener)
 client.login("ameyodebug", "dacx")
+
 
 
 i =1
 while(i > 0):
     action = SimpleAction('Ping', ActionID="")
-    client.send_action(action)
+    result = client.send_action(action)
+    print(result.response)
     time.sleep(1)
     
