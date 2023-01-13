@@ -3,8 +3,8 @@ from asterisk.ami import SimpleAction
 import time
 
 
-client = AMIClient("localhost", "8800")
-client.login("pingpong", "pingpong")
+client = AMIClient("localhost", "5038")
+client.login("ameyodebug", "dacx")
 
 
 i =1
