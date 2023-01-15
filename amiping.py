@@ -8,12 +8,11 @@ client = AMIClient("localhost", 5038)
 def event_listener(event,**kwargs):
     print(event)
 
-client.add_event_listener(event_listener)
-client.login("ameyodebug", "dacx")
-
 def callback_response(response):
     print(response)
 
+client.login("ameyodebug", "dacx")
+client.add_event_listener(event_listener)
 
 i =1
 while(i > 0):
