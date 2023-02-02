@@ -1,7 +1,7 @@
 from src import loadgenerator
 from src import amiserviceregistrar
 from src import amiping
-amiservice = amiserviceregistrar.AMIServiceRegistrar.registerami("callserver","localhost",5040,"ameyodebug","dacx")
+amiservice = amiserviceregistrar.AMIServiceRegistrar.registerami("callserver","localhost",5038,"ameyodebug","dacx")
 
 
 thread0 = amiping.Thread("amipingpongthread",1, amiservice)

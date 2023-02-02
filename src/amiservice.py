@@ -7,11 +7,11 @@ class AMIService(AMIClient):
         self.login(username, secret)
 
 
-    def generateload(self,ctx, num, channel,exten,context,calleridprefix):
+    def generateload(self,ctx, num, channel,exten,context,numprefix,callerid):
 
         for x in range(num):
-            callerid = f"{calleridprefix}num" 
-            action = SimpleAction('Originate',Channel=f'SIP/{channel}',Exten=exten,Priority=1,Context=context,CallerID=callerid,Async='true')
+            number = f"{numprefix}{x}" 
+            action = SimpleAction('Originate',Channel=f'SIP/{number}@{channel}',Exten=exten,Priority=1,Context=context,CallerID=callerid,Async='true')
             self.send_action(action)
             str = f"{ctx} originated leg for callerid {callerid}"
             print(str)

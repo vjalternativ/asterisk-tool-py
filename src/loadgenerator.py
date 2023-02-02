@@ -11,7 +11,7 @@ class Thread(threading.Thread):
         ctx = f"{self.thread_name} : {self.thread_id}"
         str =  f"{ctx} executing thread"
         print(str)    
-        self.amiservice.generateload(ctx,self.maxcalls, "asap","moh","test",'100')
+        self.amiservice.generateload(ctx,self.maxcalls, "trunk","moh","test",'0100','01414941004')
 
             
 
