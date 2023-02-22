@@ -24,7 +24,7 @@ class Thread(threading.Thread):
         #amiservice.add_event_listener(on_Hangup = self.on_Hangup)
 
     def onAMIEvent(self,event,**kwargs):
-        print(event.name)
+        
         if event.name == "Newchannel" :
             self.on_NewChannelEvent(event)
         elif event.name == "VarSet" :
@@ -36,8 +36,8 @@ class Thread(threading.Thread):
 
 
     def on_DialEnd(self,event):
-        print(event)
-        self.channelsData[event.keys['Channel']]['DialStatus'] = event.keys['DialStatus']
+       
+        self.channelsData[event.keys['DestChannel']]['DialStatus'] = event.keys['DialStatus']
         if(event.keys['DialStatus'] not in self.summary['dialstatus_vs_count']) :
             self.summary['dialstatus_vs_count'][event.keys['DialStatus']] =  1
         else :
