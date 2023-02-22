@@ -17,12 +17,10 @@ class Thread(threading.Thread):
             "hangup_cause_vs_count" : {}, 
             "total_hangup" : 0
             }
-        amiservice.add_event_listener( 
-            on_VarSet=self.on_VarSetEvent,
-            on_Newchannel=self.on_NewChannelEvent,
-            on_Hangup=self.on_Hangup,
-            on_DialEnd=self.on_DialEnd
-            )
+        amiservice.add_event_listener(on_DialEnd=self.on_DialEnd)
+        amiservice.add_event_listener(on_Newchannel=self.on_NewChannelEvent)
+        amiservice.add_event_listener(on_VarSet=self.on_VarSetEvent)
+        amiservice.add_event_listener(on_Hangup = self.on_Hangup)
 
     def on_DialEnd(self,event,**kwargs):
         print(event)
