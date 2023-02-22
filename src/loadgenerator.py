@@ -67,7 +67,8 @@ class Thread(threading.Thread):
         if event.keys['Variable'] == "SIPCALLID":
               self.csvheaderlist["sipcallid"] = 1
               self.channelsData[event.keys['Channel']]["sipcallid"] = event.keys['Value']
-        elif event.keys['Variable']  in( "RTPAUDIOQOSRTT","RTPAUDIOQOSJITTER","RTPAUDIOQOSLOSS"):
+        elif event.keys['Variable']  in( "RTPAUDIOQOS"):
+            # "RTPAUDIOQOSRTT","RTPAUDIOQOSJITTER","RTPAUDIOQOSLOSS"
             args = event.keys['Value'].strip(";").split(';')       
             for arg in args:
                 keyval = arg.split('=')
