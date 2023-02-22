@@ -95,7 +95,7 @@ class Thread(threading.Thread):
         sys.exit()
 
     def checkreport(self):
-        if(self.maxcalls == self.summary['total_channels'] and self.summary['total_channel'] == self.summary['total_hangup']):
+        if(self.maxcalls == self.summary['total_channels'] and self.summary['total_channels'] == self.summary['total_hangup']):
             self.printreport()
             sys.exit()
         
