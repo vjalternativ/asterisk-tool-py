@@ -22,26 +22,21 @@ class Thread(threading.Thread):
             on_Newchannel=self.on_NewChannelEvent,
             on_Hangup = self.on_Hangup,
             on_DialEnd = self.on_DialEnd
-
             )
-        amiservice.add_event_listener( self.onAMIEvent)
-
-    def onAMIEvent(self,event,**kwargs):
-        print(event)
-
 
     def on_DialEnd(self,event,**kwargs):
+        print(event)
         self.channelsData[event.keys['Channel']]['DialStatus'] = event.keys['DialStatus']
         self.summary['hangup_cause_vs_count'][event.keys['DialStatus']] = self.summary['dialstatus_vs_count'][event.keys['DialStatus']] + 1
 
 
     def on_Hangup(self, event, **kwargs):
+        print(event)
         self.channelsData[event.keys['Channel']]['hangupCause'] = event.keys['Cause']
         self.channelsData[event.keys['Channel']]['hangupCauseText'] = event.keys['Cause-txt']
         self.summary['hangup_cause_vs_count'][event.keys['Cause']] = self.summary['hangup_cause_vs_count'][event.keys['Cause']] + 1
         self.summary['total_hangup'] = self.summary['total_hangup'] + 1
-        if(self.maxcalls == self.summary['total_channel'] and self.summary['total_channel'] == self.summary['total_hangup']):
-            self.printreport()
+        self.checkreport()
 
     def on_VarSetEvent(self, event,**kwargs):
         if event.keys['Variable']  in( "RTPAUDIOQOSRTT","RTPAUDIOQOSJITTER","RTPAUDIOQOSLOSS","SIPCALLID" ):
@@ -72,6 +67,10 @@ class Thread(threading.Thread):
         print(self.summary)
         print(self.channelsData)
         sys.exit()
+
+    def checkreport(self):
+        if(self.maxcalls == self.summary['total_channel'] and self.summary['total_channel'] == self.summary['total_hangup']):
+            self.printreport()
         
 
             
