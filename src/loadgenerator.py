@@ -38,7 +38,7 @@ class Thread(threading.Thread):
     def on_DialEnd(self,event):
         print(event)
         self.channelsData[event.keys['Channel']]['DialStatus'] = event.keys['DialStatus']
-        self.summary['hangup_cause_vs_count'][event.keys['DialStatus']] = self.summary['dialstatus_vs_count'][event.keys['DialStatus']] + 1
+        self.summary['dialstatus_vs_count'][event.keys['DialStatus']] = self.summary['dialstatus_vs_count'][event.keys['DialStatus']] + 1
 
 
     def on_Hangup(self, event):
