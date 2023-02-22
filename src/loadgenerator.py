@@ -24,7 +24,6 @@ class Thread(threading.Thread):
         #amiservice.add_event_listener(on_Hangup = self.on_Hangup)
 
     def onAMIEvent(self,event,**kwargs):
-        print(event.name)
         if event.name == "Newchannel" :
             self.on_NewChannelEvent(event)
         elif event.name == "VarSet" :
@@ -45,10 +44,8 @@ class Thread(threading.Thread):
 
 
     def on_Hangup(self, event):
-        print(f"inside {event.name}")
         self.channelsData[event.keys['Channel']]['hangupCause'] = event.keys['Cause']
         self.channelsData[event.keys['Channel']]['hangupCauseText'] = event.keys['Cause-txt']
-        print(f"inside {event.name} checking cause")
         
         if(event.keys['Cause'] not in self.summary['hangup_cause_vs_count']) :
             self.summary['hangup_cause_vs_count'][event.keys['Cause']] =  1
@@ -56,12 +53,9 @@ class Thread(threading.Thread):
             self.summary['hangup_cause_vs_count'][event.keys['Cause']] = self.summary['hangup_cause_vs_count'][event.keys['Cause']] + 1
         
         self.summary['total_hangup'] = self.summary['total_hangup'] + 1
-        print(f"inside {event.name} checking report")
-
         self.checkreport()
 
     def on_VarSetEvent(self, event):
-        print(event)
         if event.keys['Variable'] == "SIPCALLID":
               self.channelsData[event.keys['Channel']]["sipcallid"] = event.keys['Value']
         elif event.keys['Variable']  in( "RTPAUDIOQOSRTT","RTPAUDIOQOSJITTER","RTPAUDIOQOSLOSS"):
@@ -71,7 +65,6 @@ class Thread(threading.Thread):
                 self.channelsData[event.keys['Channel']][keyval[0]] = keyval[1]
     
     def on_NewChannelEvent(self, event):
-        print(event)
         self.channelsData[event.keys['Channel']] = {}
         self.summary['total_channels'] = self.summary['total_channels'] + 1
  
@@ -90,6 +83,8 @@ class Thread(threading.Thread):
             time.sleep(1)
 
     def printreport(self):
+        ctx = f"{self.thread_name} : {self.thread_id}"
+        print(f"report for context {ctx}")
         print(self.summary)
         print(self.channelsData)
         sys.exit()
@@ -97,8 +92,7 @@ class Thread(threading.Thread):
     def checkreport(self):
         if(self.maxcalls == self.summary['total_channels'] and self.summary['total_channels'] == self.summary['total_hangup']):
             self.printreport()
-            sys.exit()
-        
+            
 
             
 
