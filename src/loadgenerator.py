@@ -85,7 +85,8 @@ class Thread(threading.Thread):
             j = i + 1
             endto = j * self.cps
             calls = self.cps if endto <= self.maxcalls else (self.maxcalls % self.cps)
-            numberprefix = f'0100{i}' 
+            numberprefix = f'0100{i}'
+            numberprefix = "trmum1e453bd91a2c9113cd416ct" 
             self.amiservice.generateload(ctx,calls, "ip_plateform","moh","test",numberprefix,'01417119470')
             time.sleep(1)
 
