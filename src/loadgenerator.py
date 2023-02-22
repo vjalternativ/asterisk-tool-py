@@ -61,11 +61,12 @@ class Thread(threading.Thread):
         self.checkreport()
 
     def on_VarSetEvent(self, event):
+        print(event)
         if event.keys['Variable'] == "SIPCALLID":
               self.csvheaderlist["sipcallid"] = 1
               self.channelsData[event.keys['Channel']]["sipcallid"] = event.keys['Value']
         elif event.keys['Variable']  in( "RTPAUDIOQOSRTT","RTPAUDIOQOSJITTER","RTPAUDIOQOSLOSS"):
-            args = event.keys['Value'].split(',')       
+            args = event.keys['Value'].split(';')       
             for arg in args:
                 keyval = arg.split('=')
                 self.channelsData[event.keys['Channel']][keyval[0]] = keyval[1]
