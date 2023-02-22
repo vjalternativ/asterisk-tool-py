@@ -94,14 +94,18 @@ class Thread(threading.Thread):
         print(f"report for context {ctx}")
         print(self.summary)
         print(self.channelsData)
-        with open(f'load-summary-{ctx}.json', 'w') as f:
+        filename = f'load-summary-{ctx}.json'
+        with open(filename, 'w') as f:
             json.dump(self.summary, f)
-        with open('load-channels.csv', 'w', newline='') as csvfile:
+        
+        filename = f'load-channel-{ctx}.csv'
+        with open(filename, 'w', newline='') as csvfile:
             fieldnames = list(self.csvheaderlist.keys())
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
             writer.writeheader()
 
             for channel in self.channelsData:
+                print(channel)
                 writer.writerow(channel)
 
         sys.exit()
