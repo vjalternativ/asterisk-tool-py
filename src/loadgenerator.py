@@ -1,10 +1,10 @@
 import threading
 import math
 import time
-import sys
+import os
 import json
 import csv
-
+from datetime import datetime
 class Thread(threading.Thread):
     def __init__(self,thread_name,thread_id,amiservice,maxcalls, cps):
         threading.Thread.__init__(self)
@@ -23,6 +23,7 @@ class Thread(threading.Thread):
         amiservice.add_event_listener(self.onAMIEvent)
         self.csvheaderlist = {}
         self.hangup_seq = 0
+        self.startTime = ''
         #amiservice.add_event_listener(on_DialEnd=self.on_DialEnd)
         #amiservice.add_event_listener(on_Newchannel=self.on_NewChannelEvent)
         #amiservice.add_event_listener(on_VarSet=self.on_VarSetEvent)
@@ -80,6 +81,7 @@ class Thread(threading.Thread):
         
 
     def run(self) :
+        self.start_time  = datetime.today().strftime('%Y-%m-%d_%H:%M:%S')
         ctx = f"{self.thread_name} : {self.thread_id}"
         str =  f"{ctx} executing thread"
         print(str)    
@@ -99,13 +101,16 @@ class Thread(threading.Thread):
             time.sleep(5)
 
     def printreport(self):
+        now  = datetime.today().strftime('%Y-%m-%d_%H:%M:%S')
+        path = f"loadreport-{self.maxcalls}-{now}"
+        os.makedirs(path)
         ctx = f"{self.thread_name}_{self.thread_id}"
         
-        filename = f'load-summary-{ctx}.json'
+        filename = f'{path}/load-summary-{ctx}.json'
         with open(filename, 'w') as f:
             json.dump(self.summary, f)
         
-        filename = f'load-channel-{ctx}.csv'
+        filename = f'{path}/load-channel-{ctx}.csv'
         with open(filename, 'w', newline='') as csvfile:
             fieldnames = list(self.csvheaderlist.keys())
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
