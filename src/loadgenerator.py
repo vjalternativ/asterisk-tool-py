@@ -38,14 +38,20 @@ class Thread(threading.Thread):
     def on_DialEnd(self,event):
         print(event)
         self.channelsData[event.keys['Channel']]['DialStatus'] = event.keys['DialStatus']
-        self.summary['dialstatus_vs_count'][event.keys['DialStatus']] = self.summary['dialstatus_vs_count'][event.keys['DialStatus']] + 1
+        if(event.keys['DialStatus'] not in self.summary['dialstatus_vs_count']) :
+            self.summary['dialstatus_vs_count'][event.keys['DialStatus']] =  1
+        else :
+            self.summary['dialstatus_vs_count'][event.keys['DialStatus']] = self.summary['dialstatus_vs_count'][event.keys['DialStatus']] + 1
 
 
     def on_Hangup(self, event):
         print(event)
         self.channelsData[event.keys['Channel']]['hangupCause'] = event.keys['Cause']
         self.channelsData[event.keys['Channel']]['hangupCauseText'] = event.keys['Cause-txt']
-        self.summary['hangup_cause_vs_count'][event.keys['Cause']] = self.summary['hangup_cause_vs_count'][event.keys['Cause']] + 1
+        if(event.keys['Cause'] not in self.summary['hangup_cause_vs_count']) :
+            self.summary['hangup_cause_vs_count'][event.keys['Cause']] =  1
+        else :
+            self.summary['hangup_cause_vs_count'][event.keys['Cause']] = self.summary['hangup_cause_vs_count'][event.keys['Cause']] + 1
         self.summary['total_hangup'] = self.summary['total_hangup'] + 1
         self.checkreport()
 
