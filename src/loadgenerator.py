@@ -112,7 +112,6 @@ class Thread(threading.Thread):
             writer.writeheader()
 
             for channel in self.channelsData.values():
-                print(channel)
                 writer.writerow(channel)
 
     def checkreport(self):
