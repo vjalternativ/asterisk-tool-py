@@ -104,7 +104,7 @@ class Thread(threading.Thread):
         now  = datetime.today().strftime('%Y-%m-%d_%H:%M:%S')
         path = f"loadreport-{self.maxcalls}-{self.start_time}"
         if not os.path.exists(path):
-        os.makedirs(path)
+            os.makedirs(path)
         ctx = f"{self.thread_name}_{self.thread_id}"
         
         filename = f'{path}/load-summary-{ctx}.json'
