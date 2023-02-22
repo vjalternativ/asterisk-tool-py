@@ -99,7 +99,7 @@ class Thread(threading.Thread):
             time.sleep(5)
 
     def printreport(self):
-        ctx = f"{self.thread_name} : {self.thread_id}"
+        ctx = f"{self.thread_name}_{self.thread_id}"
         
         filename = f'load-summary-{ctx}.json'
         with open(filename, 'w') as f:
