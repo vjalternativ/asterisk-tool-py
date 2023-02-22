@@ -102,7 +102,7 @@ class Thread(threading.Thread):
 
     def printreport(self):
         now  = datetime.today().strftime('%Y-%m-%d_%H:%M:%S')
-        path = f"loadreport-{self.maxcalls}-{self.start_time}-{now}"
+        path = f"loadreport-{self.maxcalls}-{self.start_time}"
         os.makedirs(path)
         ctx = f"{self.thread_name}_{self.thread_id}"
         
