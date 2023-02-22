@@ -104,7 +104,7 @@ class Thread(threading.Thread):
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
             writer.writeheader()
 
-            for channel in self.channelsData.value():
+            for channel in self.channelsData.values():
                 print(channel)
                 writer.writerow(channel)
 
