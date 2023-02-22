@@ -20,8 +20,8 @@ class Thread(threading.Thread):
         amiservice.add_event_listener( 
             on_VarSet=self.on_VarSetEvent,
             on_Newchannel=self.on_NewChannelEvent,
-            on_Hangup = self.on_Hangup,
-            on_DialEnd = self.on_DialEnd
+            on_Hangup=self.on_Hangup,
+            on_DialEnd=self.on_DialEnd
             )
 
     def on_DialEnd(self,event,**kwargs):
@@ -46,6 +46,7 @@ class Thread(threading.Thread):
                 self.channelsData[event.keys['Channel']][keyval[0]] = keyval[1]
     
     def on_NewChannelEvent(self, event, **kwargs):
+        print(event)
         self.channelsData[event.keys['Channel']] = {}
         self.summary['total_channels'] = self.summary['total_channels'] + 1
  
