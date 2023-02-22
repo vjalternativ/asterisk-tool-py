@@ -22,6 +22,7 @@ class Thread(threading.Thread):
             }
         amiservice.add_event_listener(self.onAMIEvent)
         self.csvheaderlist = {}
+        self.hangup_seq = 0
         #amiservice.add_event_listener(on_DialEnd=self.on_DialEnd)
         #amiservice.add_event_listener(on_Newchannel=self.on_NewChannelEvent)
         #amiservice.add_event_listener(on_VarSet=self.on_VarSetEvent)
@@ -90,12 +91,15 @@ class Thread(threading.Thread):
             numberprefix = "trmum1e453bd91a2c9113cd416ct" 
             self.amiservice.generateload(ctx,calls, "ip_plateform","moh","test",numberprefix,'01417119470')
             time.sleep(1)
+        while(True) :
+            self.checkreport()
+            if(self.maxcalls == self.summary['total_channels'] and self.summary['total_channels'] == self.summary['total_hangup']):
+                break;
+            time.sleep(5)
 
     def printreport(self):
         ctx = f"{self.thread_name} : {self.thread_id}"
-        print(f"report for context {ctx}")
-        print(self.summary)
-        print(self.channelsData)
+        
         filename = f'load-summary-{ctx}.json'
         with open(filename, 'w') as f:
             json.dump(self.summary, f)
@@ -110,11 +114,14 @@ class Thread(threading.Thread):
                 print(channel)
                 writer.writerow(channel)
 
-        sys.exit()
-
     def checkreport(self):
-        if(self.maxcalls == self.summary['total_channels'] and self.summary['total_channels'] == self.summary['total_hangup']):
-            self.printreport()
+        ctx = f"{self.thread_name} : {self.thread_id}"
+        print(f"report for context {ctx}")
+        print(self.summary)
+        print(self.channelsData)
+        self.printreport()
+        
+
             
 
             
