@@ -29,7 +29,7 @@ class Thread(threading.Thread):
         #amiservice.add_event_listener(on_Hangup = self.on_Hangup)
 
     def onAMIEvent(self,event,**kwargs):
-        print(event)
+       
         if event.name == "Newchannel" :
             self.on_NewChannelEvent(event)
         elif event.name == "VarSet" :
@@ -50,7 +50,7 @@ class Thread(threading.Thread):
 
 
     def on_Hangup(self, event):
-        print(event)
+       
         self.channelsData[event.keys['Channel']]['hangupCause'] = event.keys['Cause']
         self.channelsData[event.keys['Channel']]['hangupCauseText'] = event.keys['Cause-txt']
         self.csvheaderlist["hangupCause"] = 1
