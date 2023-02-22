@@ -119,7 +119,6 @@ class Thread(threading.Thread):
         ctx = f"{self.thread_name} : {self.thread_id}"
         print(f"report for context {ctx}")
         print(self.summary)
-        print(self.channelsData)
         self.printreport()
         
 
