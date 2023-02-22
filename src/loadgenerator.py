@@ -24,14 +24,14 @@ class Thread(threading.Thread):
         #amiservice.add_event_listener(on_Hangup = self.on_Hangup)
 
     def onAMIEvent(self,event,**kwargs):
-        print(event)
+        print(event.name)
         if event.name == "Newchannel" :
             self.on_NewChannelEvent(event)
         elif event.name == "VarSet" :
             self.on_VarSetEvent(event)
         elif event.name == "DialEnd" :
             self.on_DialEnd(event)
-        elif event.name =="Hangup":
+        elif event.name == "Hangup":
             self.on_Hangup(event)
 
 
@@ -50,6 +50,7 @@ class Thread(threading.Thread):
         self.checkreport()
 
     def on_VarSetEvent(self, event):
+        print(event)
         if event.keys['Variable']  in( "RTPAUDIOQOSRTT","RTPAUDIOQOSJITTER","RTPAUDIOQOSLOSS","SIPCALLID" ):
             args = event.keys['Value'].split(',')
             for arg in args:
