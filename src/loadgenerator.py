@@ -24,7 +24,12 @@ class Thread(threading.Thread):
             on_DialEnd = self.on_DialEnd
 
             )
-            
+        amiservice.add_event_listener( self.onAMIEvent)
+
+    def onAMIEvent(self,event,**kwargs):
+        print(event)
+
+
     def on_DialEnd(self,event,**kwargs):
         self.channelsData[event.keys['Channel']]['DialStatus'] = event.keys['DialStatus']
         self.summary['hangup_cause_vs_count'][event.keys['DialStatus']] = self.summary['dialstatus_vs_count'][event.keys['DialStatus']] + 1
