@@ -2,6 +2,9 @@ import threading
 import math
 import time
 import sys
+import json
+import csv
+
 class Thread(threading.Thread):
     def __init__(self,thread_name,thread_id,amiservice,maxcalls, cps):
         threading.Thread.__init__(self)
@@ -18,6 +21,7 @@ class Thread(threading.Thread):
             "total_hangup" : 0
             }
         amiservice.add_event_listener(self.onAMIEvent)
+        self.csvheaderlist = {}
         #amiservice.add_event_listener(on_DialEnd=self.on_DialEnd)
         #amiservice.add_event_listener(on_Newchannel=self.on_NewChannelEvent)
         #amiservice.add_event_listener(on_VarSet=self.on_VarSetEvent)
@@ -35,7 +39,7 @@ class Thread(threading.Thread):
 
 
     def on_DialEnd(self,event):
-       
+        self.csvheaderlist["DialStatus"] = 1
         self.channelsData[event.keys['DestChannel']]['DialStatus'] = event.keys['DialStatus']
         if(event.keys['DialStatus'] not in self.summary['dialstatus_vs_count']) :
             self.summary['dialstatus_vs_count'][event.keys['DialStatus']] =  1
@@ -46,7 +50,8 @@ class Thread(threading.Thread):
     def on_Hangup(self, event):
         self.channelsData[event.keys['Channel']]['hangupCause'] = event.keys['Cause']
         self.channelsData[event.keys['Channel']]['hangupCauseText'] = event.keys['Cause-txt']
-        
+        self.csvheaderlist["hangupCause"] = 1
+        self.csvheaderlist["hangupCauseText"] =1
         if(event.keys['Cause'] not in self.summary['hangup_cause_vs_count']) :
             self.summary['hangup_cause_vs_count'][event.keys['Cause']] =  1
         else :
@@ -57,17 +62,19 @@ class Thread(threading.Thread):
 
     def on_VarSetEvent(self, event):
         if event.keys['Variable'] == "SIPCALLID":
+              self.csvheaderlist["sipcallid"] = 1
               self.channelsData[event.keys['Channel']]["sipcallid"] = event.keys['Value']
         elif event.keys['Variable']  in( "RTPAUDIOQOSRTT","RTPAUDIOQOSJITTER","RTPAUDIOQOSLOSS"):
             args = event.keys['Value'].split(',')       
             for arg in args:
                 keyval = arg.split('=')
                 self.channelsData[event.keys['Channel']][keyval[0]] = keyval[1]
+                self.csvheaderlist[keyval[0]] =  1
     
     def on_NewChannelEvent(self, event):
         self.channelsData[event.keys['Channel']] = {}
         self.summary['total_channels'] = self.summary['total_channels'] + 1
- 
+        
 
     def run(self) :
         ctx = f"{self.thread_name} : {self.thread_id}"
@@ -87,6 +94,16 @@ class Thread(threading.Thread):
         print(f"report for context {ctx}")
         print(self.summary)
         print(self.channelsData)
+        with open(f'load-summary-{ctx}.json', 'w') as f:
+            json.dump(self.summary, f)
+        with open('load-channels.csv', 'w', newline='') as csvfile:
+            fieldnames = list(self.csvheaderlist.keys())
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            writer.writeheader()
+
+            for channel in self.channelsData:
+                writer.writerow(channel)
+
         sys.exit()
 
     def checkreport(self):
