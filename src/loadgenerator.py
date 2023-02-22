@@ -11,7 +11,12 @@ class Thread(threading.Thread):
         self.maxcalls = maxcalls
         self.cps = cps
         self.channelsData =  {}
-        self.summary = {"total_channels" : 0, "dialstatus_vs_count" : {} , "hangup_cause_vs_count" : {}}
+        self.summary = { 
+            "total_channels" : 0, 
+            "dialstatus_vs_count" : {} , 
+            "hangup_cause_vs_count" : {}, 
+            "total_hangup" : 0
+            }
         amiservice.add_event_listener( 
             on_VarSet=self.on_VarSetEvent,
             on_Newchannel=self.on_NewChannelEvent,
@@ -29,7 +34,10 @@ class Thread(threading.Thread):
         self.channelsData[event.keys['Channel']]['hangupCause'] = event.keys['Cause']
         self.channelsData[event.keys['Channel']]['hangupCauseText'] = event.keys['Cause-txt']
         self.summary['hangup_cause_vs_count'][event.keys['Cause']] = self.summary['hangup_cause_vs_count'][event.keys['Cause']] + 1
-        
+        self.summary['total_hangup'] = self.summary['total_hangup'] + 1
+        if(self.maxcalls == self.summary['total_channel'] and self.summary['total_channel'] == self.summary['total_hangup']):
+            self.printreport()
+
     def on_VarSetEvent(self, event,**kwargs):
         if event.keys['Variable']  in( "RTPAUDIOQOSRTT","RTPAUDIOQOSJITTER","RTPAUDIOQOSLOSS","SIPCALLID" ):
             args = event.keys['Value'].split(',')
@@ -54,7 +62,6 @@ class Thread(threading.Thread):
             numberprefix = f'0100{i}' 
             self.amiservice.generateload(ctx,calls, "ip_plateform","moh","test",numberprefix,'01417119470')
             time.sleep(1)
-        self.printreport()
 
     def printreport(self):
         print(self.summary)
