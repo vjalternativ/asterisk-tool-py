@@ -49,6 +49,7 @@ class Thread(threading.Thread):
 
 
     def on_Hangup(self, event):
+        print(event)
         self.channelsData[event.keys['Channel']]['hangupCause'] = event.keys['Cause']
         self.channelsData[event.keys['Channel']]['hangupCauseText'] = event.keys['Cause-txt']
         self.csvheaderlist["hangupCause"] = 1
@@ -57,9 +58,8 @@ class Thread(threading.Thread):
             self.summary['hangup_cause_vs_count'][event.keys['Cause']] =  1
         else :
             self.summary['hangup_cause_vs_count'][event.keys['Cause']] = self.summary['hangup_cause_vs_count'][event.keys['Cause']] + 1
-        
+        print("increasing hangup count")
         self.summary['total_hangup'] = self.summary['total_hangup'] + 1
-        self.checkreport()
 
     def on_VarSetEvent(self, event):
       
