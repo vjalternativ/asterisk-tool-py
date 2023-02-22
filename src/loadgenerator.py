@@ -17,18 +17,31 @@ class Thread(threading.Thread):
             "hangup_cause_vs_count" : {}, 
             "total_hangup" : 0
             }
-        amiservice.add_event_listener(on_DialEnd=self.on_DialEnd)
-        amiservice.add_event_listener(on_Newchannel=self.on_NewChannelEvent)
-        amiservice.add_event_listener(on_VarSet=self.on_VarSetEvent)
-        amiservice.add_event_listener(on_Hangup = self.on_Hangup)
+        amiservice.add_event_listener(self.onAMIEvent)
+        #amiservice.add_event_listener(on_DialEnd=self.on_DialEnd)
+        #amiservice.add_event_listener(on_Newchannel=self.on_NewChannelEvent)
+        #amiservice.add_event_listener(on_VarSet=self.on_VarSetEvent)
+        #amiservice.add_event_listener(on_Hangup = self.on_Hangup)
 
-    def on_DialEnd(self,event,**kwargs):
+    def onAMIEvent(self,event,**kwargs):
+        print(event)
+        if event.name == "Newchannel" :
+            self.on_NewChannelEvent(event)
+        elif event.name == "VarSet" :
+            self.on_VarSetEvent(event)
+        elif event.name == "DialEnd" :
+            self.on_DialEnd(event)
+        elif event.name =="Hangup":
+            self.on_Hangup(event)
+
+
+    def on_DialEnd(self,event):
         print(event)
         self.channelsData[event.keys['Channel']]['DialStatus'] = event.keys['DialStatus']
         self.summary['hangup_cause_vs_count'][event.keys['DialStatus']] = self.summary['dialstatus_vs_count'][event.keys['DialStatus']] + 1
 
 
-    def on_Hangup(self, event, **kwargs):
+    def on_Hangup(self, event):
         print(event)
         self.channelsData[event.keys['Channel']]['hangupCause'] = event.keys['Cause']
         self.channelsData[event.keys['Channel']]['hangupCauseText'] = event.keys['Cause-txt']
@@ -36,14 +49,14 @@ class Thread(threading.Thread):
         self.summary['total_hangup'] = self.summary['total_hangup'] + 1
         self.checkreport()
 
-    def on_VarSetEvent(self, event,**kwargs):
+    def on_VarSetEvent(self, event):
         if event.keys['Variable']  in( "RTPAUDIOQOSRTT","RTPAUDIOQOSJITTER","RTPAUDIOQOSLOSS","SIPCALLID" ):
             args = event.keys['Value'].split(',')
             for arg in args:
                 keyval = arg.split('=')
                 self.channelsData[event.keys['Channel']][keyval[0]] = keyval[1]
     
-    def on_NewChannelEvent(self, event, **kwargs):
+    def on_NewChannelEvent(self, event):
         print(event)
         self.channelsData[event.keys['Channel']] = {}
         self.summary['total_channels'] = self.summary['total_channels'] + 1
