@@ -24,7 +24,7 @@ class Thread(threading.Thread):
         #amiservice.add_event_listener(on_Hangup = self.on_Hangup)
 
     def onAMIEvent(self,event,**kwargs):
-        
+        print(event.name)
         if event.name == "Newchannel" :
             self.on_NewChannelEvent(event)
         elif event.name == "VarSet" :
@@ -45,14 +45,19 @@ class Thread(threading.Thread):
 
 
     def on_Hangup(self, event):
-        print(event)
+        print(f"inside {event.name}")
         self.channelsData[event.keys['Channel']]['hangupCause'] = event.keys['Cause']
         self.channelsData[event.keys['Channel']]['hangupCauseText'] = event.keys['Cause-txt']
+        print(f"inside {event.name} checking cause")
+        
         if(event.keys['Cause'] not in self.summary['hangup_cause_vs_count']) :
             self.summary['hangup_cause_vs_count'][event.keys['Cause']] =  1
         else :
             self.summary['hangup_cause_vs_count'][event.keys['Cause']] = self.summary['hangup_cause_vs_count'][event.keys['Cause']] + 1
+        
         self.summary['total_hangup'] = self.summary['total_hangup'] + 1
+        print(f"inside {event.name} checking report")
+
         self.checkreport()
 
     def on_VarSetEvent(self, event):
@@ -90,6 +95,7 @@ class Thread(threading.Thread):
         sys.exit()
 
     def checkreport(self):
+        print(self.summary)
         if(self.maxcalls == self.summary['total_channel'] and self.summary['total_channel'] == self.summary['total_hangup']):
             self.printreport()
             sys.exit()
