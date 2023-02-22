@@ -14,10 +14,10 @@ class Thread(threading.Thread):
             on_VarSet=self.on_VarSetEvent,
             on_Newchannel=self.on_NewChannelEvent)
 
-    def on_VR1VarSetEvent(self, event,**kwargs):
+    def on_VarSetEvent(self, event,**kwargs):
         self.channelsData[event.keys['Channel']][event.keys['Variable']] = event.keys['Value']
     
-    def on_VR1NewChannelEvent(self, event, **kwargs):
+    def on_NewChannelEvent(self, event, **kwargs):
         self.channelsData[event.keys['Channel']] = {}
 
 
