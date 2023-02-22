@@ -51,8 +51,10 @@ class Thread(threading.Thread):
 
     def on_VarSetEvent(self, event):
         print(event)
-        if event.keys['Variable']  in( "RTPAUDIOQOSRTT","RTPAUDIOQOSJITTER","RTPAUDIOQOSLOSS","SIPCALLID" ):
-            args = event.keys['Value'].split(',')
+        if event.keys['Variable'] == "SIPCALLID":
+              self.channelsData[event.keys['Channel']]["sipcallid"] = event.keys['Value']
+        elif event.keys['Variable']  in( "RTPAUDIOQOSRTT","RTPAUDIOQOSJITTER","RTPAUDIOQOSLOSS"):
+            args = event.keys['Value'].split(',')       
             for arg in args:
                 keyval = arg.split('=')
                 self.channelsData[event.keys['Channel']][keyval[0]] = keyval[1]
