@@ -81,7 +81,7 @@ class Thread(threading.Thread):
         
 
     def run(self) :
-        self.start_time  = datetime.today().strftime('%Y-%m-%d_%H:%M:%S')
+        self.start_time  = datetime.today().strftime('%Y-%m-%d_%H-%M-%S')
         ctx = f"{self.thread_name} : {self.thread_id}"
         str =  f"{ctx} executing thread"
         print(str)    
@@ -101,7 +101,6 @@ class Thread(threading.Thread):
             time.sleep(5)
 
     def printreport(self):
-        now  = datetime.today().strftime('%Y-%m-%d_%H:%M:%S')
         path = f"loadreport-{self.maxcalls}-{self.start_time}"
         if not os.path.exists(path):
             os.makedirs(path)
