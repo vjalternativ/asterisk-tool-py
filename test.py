@@ -5,7 +5,7 @@ amiservice = amiserviceregistrar.AMIServiceRegistrar.registerami("callserver","l
 
 
 thread0 = amiping.Thread("amipingpongthread",1, amiservice)
-thread1 = loadgenerator.Thread("amithread",2 ,amiservice,1,50)
+thread1 = loadgenerator.Thread("amithread",2 ,amiservice,1,50,True)
 
 
 thread0.start()

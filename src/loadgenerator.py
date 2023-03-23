@@ -6,7 +6,7 @@ import json
 import csv
 from datetime import datetime
 class Thread(threading.Thread):
-    def __init__(self,thread_name,thread_id,amiservice,maxcalls, cps):
+    def __init__(self,thread_name,thread_id,amiservice,maxcalls, cps, webhook=None):
         threading.Thread.__init__(self)
         self.thread_name = thread_name
         self.thread_id = thread_id
@@ -14,6 +14,7 @@ class Thread(threading.Thread):
         self.maxcalls = maxcalls
         self.cps = cps
         self.channelsData =  {}
+        self.webhook = webhook
         self.summary = { 
             "total_channels" : 0, 
             "dialstatus_vs_count" : {} , 
@@ -92,7 +93,7 @@ class Thread(threading.Thread):
             calls = self.cps if endto <= self.maxcalls else (self.maxcalls % self.cps)
             numberprefix = f'0100{i}'
             numberprefix = "trmum1e453bd91a2c9113cd416ct" 
-            self.amiservice.generateload(ctx,calls, "ip_plateform","moh","test",numberprefix,'01417119470')
+            self.amiservice.generateload(ctx,calls, "ip_plateform","moh","test",numberprefix,'01417119470',self.webhook)
             time.sleep(1)
         while(True) :
             self.checkreport()
