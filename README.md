@@ -19,4 +19,7 @@ reload asterisk
 
 Usage
 execute below command to geneator the load
-python3 test.py -n 1 -c 1        
+python3 test.py -n 1 -c 1 
+
+n = number of channels
+c = channels per second (it should not be greater than 50)
