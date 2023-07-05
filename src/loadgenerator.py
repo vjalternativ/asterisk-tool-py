@@ -5,8 +5,8 @@ import os
 import json
 import csv
 from datetime import datetime
-class Thread(threading.Thread):
-    def __init__(self,thread_name,thread_id,amiservice,maxcalls, cps, webhook=None):
+class Service(threading.Thread):
+    def __init__(self,thread_name,thread_id,amiservice,maxcalls, cps, callparams):
         threading.Thread.__init__(self)
         self.thread_name = thread_name
         self.thread_id = thread_id
@@ -14,7 +14,9 @@ class Thread(threading.Thread):
         self.maxcalls = maxcalls
         self.cps = cps
         self.channelsData =  {}
-        self.webhook = webhook
+        self.callparams = callparams
+
+        
         self.summary = { 
             "total_channels" : 0, 
             "dialstatus_vs_count" : {} , 
@@ -31,7 +33,6 @@ class Thread(threading.Thread):
         #amiservice.add_event_listener(on_Hangup = self.on_Hangup)
 
     def onAMIEvent(self,event,**kwargs):
-       
         if event.name == "Newchannel" :
             self.on_NewChannelEvent(event)
         elif event.name == "VarSet" :
@@ -61,7 +62,6 @@ class Thread(threading.Thread):
             self.summary['hangup_cause_vs_count'][event.keys['Cause']] =  1
         else :
             self.summary['hangup_cause_vs_count'][event.keys['Cause']] = self.summary['hangup_cause_vs_count'][event.keys['Cause']] + 1
-        print("increasing hangup count")
         self.summary['total_hangup'] = self.summary['total_hangup'] + 1
 
     def on_VarSetEvent(self, event):
@@ -91,9 +91,8 @@ class Thread(threading.Thread):
             j = i + 1
             endto = j * self.cps
             calls = self.cps if endto <= self.maxcalls else (self.maxcalls % self.cps)
-            numberprefix = f'0100{i}'
-            numberprefix = "trmum1e453bd91a2c9113cd416ct" 
-            self.amiservice.generateload(ctx,calls, "ip_plateform","moh","test",numberprefix,'01417119470',self.webhook)
+            numberprefix = f"{self.callparams['to_prefix']}{i}"
+            self.amiservice.generateload(ctx,calls, self.callparams['sipentity'],self.callparams['extension'],self.callparams['context'],numberprefix,self.callparams['callerid'])
             time.sleep(1)
         while(True) :
             self.checkreport()
@@ -119,18 +118,16 @@ class Thread(threading.Thread):
 
             for channel in self.channelsData.values():
                 writer.writerow(channel)
-            print(f"{ctx} report generated")
-
+           
     def checkreport(self):
         ctx = f"{self.thread_name} : {self.thread_id}"
-        print(f"report for context {ctx}")
-        print(self.summary)
+        print(f"report {ctx} : {self.summary}")
         self.printreport()
         
 
             
-
-            
-
-
-    
+class Thread(Service, threading.Thread):
+    def __init__(self,thread_name,thread_id,amiservice,maxcalls, cps, callparams):
+        threading.Thread.__init__(self)
+        Service.__init__(self,thread_name,thread_id,amiservice,maxcalls, cps, callparams)
+        
