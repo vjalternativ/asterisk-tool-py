@@ -1,5 +1,5 @@
 [asterisk]
-host=localvm
+host=localhost
 user=ameyodebug
 secret=dacx
 port=5038

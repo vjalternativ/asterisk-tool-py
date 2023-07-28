@@ -1,2 +1,2 @@
 asterisk_ami==0.1.6
-requests==2.28.2
+requests==2.27.1
