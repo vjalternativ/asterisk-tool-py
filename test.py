@@ -23,18 +23,18 @@ args = parser.parse_args()
 
 amiservice = amiserviceregistrar.AMIServiceRegistrar.registerami("callserver", astconf['host'], int(astconf['port']),astconf['user'],astconf['secret'],callparams)
 
-service = loadgenerator.Service("amithread",2,amiservice,args.channels,args.cps,callparams)
-service.run()
+#service = loadgenerator.Service("amithread",2,amiservice,args.channels,args.cps,callparams)
+#service.run()
 
-#thread0 = amiping.Thread("amipingpongthread",1, amiservice)
-#thread1 = loadgenerator.Thread("amithread",2 ,amiservice,args.cps,args.cps,callparams)
+thread0 = amiping.Thread("amipingpongthread",1, amiservice)
+thread1 = loadgenerator.Thread("amithread",2 ,amiservice,args.channels,args.cps,callparams)
 
 
-#thread0.start()
-#thread1.start()
+thread0.start()
+thread1.start()
 
-#thread0.join()
-#thread1.join()
+thread0.join()
+thread1.join()
 
 
 
