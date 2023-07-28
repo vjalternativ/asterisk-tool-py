@@ -10,7 +10,9 @@ pip3 install -r requirements.txt
 
 
 PreReq
+
 copy assets/loadgenerator/sip.conf , assets/loadgenerator/manager.conf and assets/loadgenerator/extensions.conf in load generator asterisk configuration path
+
 for eg for asterisk13 path will be /dacx/var/ameyo/dacxdata/asterisks/13/etc/asterisk/
 
 in asterisk cli  execute reload command
@@ -19,6 +21,7 @@ copy assets/simulator/sip.conf and assets/simulator/extensions.conf in simulator
 reload asterisk
 
 change the simulator asterisk ip in loadgenerator asterisk sip.conf 
+change the loadgenerator asterisk ip in simulator asterisk sip.conf
 
 Usage
 execute below command to geneator the load
