@@ -1,8 +1,9 @@
 from src import amiserviceregistrar
 import configparser
-from asterisk.ami import SimpleAction
-def onAMIEvent(self,event,**kwargs):
-    print(event)
+from asterisk.ami import SimpleAction  
+
+def onAMIEvent(event,**kwargs):
+    print(vars(event))
     
 
 config = configparser.ConfigParser()
@@ -15,10 +16,12 @@ amiservice = amiserviceregistrar.AMIServiceRegistrar.registerami("callserver", a
 
 amiservice.add_event_listener(onAMIEvent)
         
-action = SimpleAction('Originate',Channel=f'SIP/a@asap_1',Exten='callconfer',Priority=1,Context="from-manager-core",ActionId= "orginate-customer")
+action = SimpleAction('Originate',Channel=f'SIP/a@asap_1',Exten='callconfer',Priority=1,Context="from-manager-core",ActionID= "orginate-customer")
 resp = amiservice.send_action(action)
 
+print(vars(resp.response))
 
-action = SimpleAction('Originate',Channel=f'Local/a@vj',Exten='callconfer',Priority=1,Context="from-manager-core", ActionId= "originate-local")
+action = SimpleAction('Originate',Channel=f'Local/a@vj',Exten='callconfer',Priority=1,Context="from-manager-core", ActionID= "originate-local")
 resp = amiservice.send_action(action)
+print(vars(resp.response))
             
