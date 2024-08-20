@@ -19,9 +19,9 @@ amiservice.add_event_listener(onAMIEvent)
 action = SimpleAction('Originate',Channel=f'SIP/a@asap_1',Exten='callconfer',Priority=1,Context="from-manager-core",ActionID= "orginate-customer")
 resp = amiservice.send_action(action)
 
-print(vars(resp.response))
+print(resp.response)
 
 action = SimpleAction('Originate',Channel=f'Local/a@vj',Exten='callconfer',Priority=1,Context="from-manager-core", ActionID= "originate-local")
 resp = amiservice.send_action(action)
-print(vars(resp.response))
+print(resp.response)
             
