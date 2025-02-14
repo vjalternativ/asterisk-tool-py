@@ -42,8 +42,13 @@ class Service(threading.Thread):
             time.sleep(1)
         while(True) :
             self.checkreport()
-            if(self.maxcalls == self.summary['total_channels'] and self.summary['total_channels'] == self.summary['total_hangup']):
-                break;
+            if(self.callparams["wait_for_hangup"] == "yes"):
+                if(self.maxcalls == self.summary['total_channels'] and self.summary['total_channels'] == self.summary['total_hangup']):
+                    break
+            else:
+                if(self.maxcalls == self.summary['total_channels']):
+                    break
+                
             time.sleep(5)
 
     def printreport(self):

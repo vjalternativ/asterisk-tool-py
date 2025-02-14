@@ -16,4 +16,4 @@ to_prefix=0100
 to_number=
 webhook=no
 webhook_url=http://10.0.0.65:8081/v1/sip-trunk-webhook
-
+wait_for_hangup=yes
