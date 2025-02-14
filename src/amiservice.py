@@ -8,6 +8,8 @@ class AMIService(AMIClient):
         super().__init__(address, port)
         self.callparams = callparams
         self.login(username, secret)
+        self.channelsData =  {}
+        self._action_counter = 0
         self.summary = { 
             "total_channels" : 0, 
             "dialstatus_vs_count" : {} , 
@@ -36,7 +38,8 @@ class AMIService(AMIClient):
                     print(f" orig {number}")
             if(is_dynamic_to == "no") :
                 number = to_number
-            action = SimpleAction('Originate',Channel=f'SIP/{number}@{channel}',Exten=exten,Priority=1,Context=context,CallerID=callerid,Async='true')
+            actionId = self.next_action_id()
+            action = SimpleAction('Originate',Channel=f'SIP/{number}@{channel}',Exten=exten,Priority=1,Context=context,CallerID=callerid,Async='true', ActionID=actionId)
             resp = self.send_action(action)
             str = f"{ctx} originate SIP/{number}@{channel} extension {exten}@{context} for callerid {callerid} "
             print(str)
@@ -94,4 +97,9 @@ class AMIService(AMIClient):
     
     def getCSVHeaderList(self):
         return self.csvheaderlist
+    
+    def next_action_id(self):
+        id = self._action_counter
+        self._action_counter += 1
+        return str(id)
    
