@@ -67,8 +67,8 @@ class Service(threading.Thread):
            
     def checkreport(self):
         ctx = f"{self.thread_name} : {self.thread_id}"
-        print(f"report {ctx} : {self.summary}")
         self.summary = self.amiservice.summary
+        print(f"report {ctx} : {self.summary}")
         self.printreport()
         
 
