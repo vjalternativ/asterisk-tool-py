@@ -68,6 +68,7 @@ class Service(threading.Thread):
     def checkreport(self):
         ctx = f"{self.thread_name} : {self.thread_id}"
         self.summary = self.amiservice.summary
+        self.csvheaderlist = self.amiservice.csvheaderlist
         print(f"report {ctx} : {self.summary}")
         self.printreport()
         
