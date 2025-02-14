@@ -89,7 +89,7 @@ class AMIService(AMIClient):
                 self.csvheaderlist[keyval[0]] =  1
     
     def on_NewChannelEvent(self, event):
-        if(event.ActionID != ""):
+        if(event.keys['ActionID'] != ""):
             self.channelsData[event.keys['Channel']] = {}
             self.summary['total_channels'] = self.summary['total_channels'] + 1
     
