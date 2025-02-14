@@ -38,7 +38,7 @@ class Service(threading.Thread):
             endto = j * self.cps
             calls = self.cps if endto <= self.maxcalls else (self.maxcalls % self.cps)
             numberprefix = f"{self.callparams['to_prefix']}{i}"
-            self.amiservice.generateload(ctx,calls, self.callparams['sipentity'],self.callparams['extension'],self.callparams['context'],numberprefix,self.callparams['callerid'])
+            self.amiservice.generateload(ctx,calls, self.callparams['sipentity'],self.callparams['extension'],self.callparams['context'],numberprefix,self.callparams['callerid'], self.callparams['dynamic_to'], self.callparams['to_number'])
             time.sleep(1)
         while(True) :
             self.checkreport()

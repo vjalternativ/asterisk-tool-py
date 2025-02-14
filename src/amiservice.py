@@ -23,7 +23,7 @@ class AMIService(AMIClient):
         
 
 
-    def generateload(self,ctx, num, channel,exten,context,numprefix,callerid):
+    def generateload(self,ctx, num, channel,exten,context,numprefix,callerid, is_dynamic_to, to_number):
 
         for x in range(num):
             number = f"{numprefix}{x}"
@@ -34,6 +34,8 @@ class AMIService(AMIClient):
                     obj = json.loads(response.content)
                     number = obj['destination']['trunk']
                     print(f" orig {number}")
+            if(is_dynamic_to == "no") :
+                number = to_number
             action = SimpleAction('Originate',Channel=f'SIP/{number}@{channel}',Exten=exten,Priority=1,Context=context,CallerID=callerid,Async='true')
             resp = self.send_action(action)
             str = f"{ctx} originate SIP/{number}@{channel} extension {exten}@{context} for callerid {callerid} "
