@@ -88,4 +88,10 @@ class AMIService(AMIClient):
     def on_NewChannelEvent(self, event):
         self.channelsData[event.keys['Channel']] = {}
         self.summary['total_channels'] = self.summary['total_channels'] + 1
+    
+    def getSummary(self):
+        return self.summary
+    
+    def getCSVHeaderList(self):
+        return self.csvheaderlist
    
