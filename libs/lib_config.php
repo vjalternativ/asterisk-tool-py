@@ -37,7 +37,11 @@ class lib_config
         $this->config['basepath'] = $dir;
         if (isset($_SERVER['DOCUMENT_ROOT']) && $_SERVER['DOCUMENT_ROOT']) {
 
-            $prefix = $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"];
+            $httpProtocol = "http";
+            if (isset($_SERVER['HTTPS'])) {
+                $httpProtocol = "https";
+            }
+            $prefix = $httpProtocol . "://" . $_SERVER["HTTP_HOST"];
             if (! ($_SERVER['SERVER_PORT'] == "80" || $_SERVER['SERVER_PORT'] == "443")) {
                 // $prefix .= ":" . $_SERVER['SERVER_PORT'];
             }
